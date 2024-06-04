@@ -8,6 +8,20 @@ uses
 
 type
 
+  TPessoa = class
+  private
+    Fnome: String;
+    procedure Setnome(const Value: String);
+  published
+    property nome : String  read Fnome write Setnome;
+  end;
+
+  TNFe<T: constructor> = class
+    FGeneric : T;
+    constructor Create;
+    function GetGeneric : T;
+  end;
+
   TProduto = class
   private
     FDescricao: String;
@@ -57,6 +71,7 @@ type
     Button6: TButton;
     Edit1: TEdit;
     Button7: TButton;
+    Button8: TButton;
     procedure Button1Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);
     procedure Button3Click(Sender: TObject);
@@ -64,6 +79,7 @@ type
     procedure Button5Click(Sender: TObject);
     procedure Button6Click(Sender: TObject);
     procedure Button7Click(Sender: TObject);
+    procedure Button8Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -180,6 +196,18 @@ begin
 
 end;
 
+procedure TForm1.Button8Click(Sender: TObject);
+Var
+  NFE : TNFe<TPessoa>;
+begin
+  NFE := TNFe<TPessoa>.Create;
+  Try
+   NFE.FGeneric.nome := 'Kaio';
+  Finally
+    NFE.Free;
+  End;
+end;
+
 { TENeumUtils<T> }
 
 class procedure TENeumUtils<T>.EnumToList(Value: Tstrings);
@@ -218,6 +246,25 @@ end;
 procedure TProduto.SetDescricao(const Value: String);
 begin
   FDescricao := Value;
+end;
+
+{ TPessoa }
+
+procedure TPessoa.Setnome(const Value: String);
+begin
+  Fnome := Value;
+end;
+
+{ TNFe<T> }
+
+constructor TNFe<T>.Create;
+begin
+  FGeneric := T.Create;
+end;
+
+function TNFe<T>.GetGeneric: T;
+begin
+  result := FGeneric;
 end;
 
 end.
